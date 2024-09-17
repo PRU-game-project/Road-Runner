@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "115000617301",
+    "firebase_url": "https://awesome-road-default-rtdb.firebaseio.com",
+    "project_id": "awesome-road",
+    "storage_bucket": "awesome-road.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115000617301:android:cc0e86f92ee421291027dc",
+        "android_client_info": {
+          "package_name": "com.game1.firebasedb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqoNSRm93fP0r5gWCzNutt1Vw-thyzGvU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
