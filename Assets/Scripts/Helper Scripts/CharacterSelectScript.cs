@@ -14,7 +14,7 @@ public class CharacterSelectScript : MonoBehaviour {
 	public Image selectBtn_Image;
 	public Sprite button_Green, button_Blue;
 
-	private bool[] heroes;
+	private bool[] heroes = new bool[9] ;
 
 	public Text starScoreText;
 
@@ -68,7 +68,8 @@ public class CharacterSelectScript : MonoBehaviour {
 	}
 
 	void CheckIfCharacterIsUnlocked() {
-		Debug.Log("CheckIfCharacterIsUnlocked Current Index: " + currentIndex);
+		heroes = GameManager.instance.heroes;
+
         if (heroes [currentIndex]) {
 			// if the hero is unlocked
 
