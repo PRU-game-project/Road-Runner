@@ -68,10 +68,10 @@ public class CharacterSelectScript : MonoBehaviour {
 	}
 
 	void CheckIfCharacterIsUnlocked() {
-		heroes = GameManager.instance.heroes;
+		heroes = GameManager.instance.heroes; // array true false
 
         if (heroes [currentIndex]) {
-			// if the hero is unlocked
+			// if the hero is unlocked = true
 
 			starIcon.SetActive (false);
 
