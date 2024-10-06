@@ -25,7 +25,10 @@ public class AnimationEvents : MonoBehaviour {
 		gameObject.SetActive (false);
 	}
 
-	
+	void PausePanelClose() {
+		Time.timeScale = 1f;
+		gameObject.SetActive (false);
+	}
 
 } // class
 
