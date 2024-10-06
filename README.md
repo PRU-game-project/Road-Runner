@@ -42,6 +42,8 @@ git clone https://github.com/your-repo-url.git
 
 ### Step 5: Play game !
 
+---
+
 ## 👥 Contributors
 
 - **Nguyen Tien Thanh**
