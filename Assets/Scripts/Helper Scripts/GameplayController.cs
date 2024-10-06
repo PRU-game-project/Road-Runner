@@ -9,10 +9,11 @@ public class GameplayController : MonoBehaviour {
 	public static GameplayController instance;
 
 	public float moveSpeed, distance_Factor = 1f;
-	private float distance_Move;
+	public float distance_Move;
 	private bool gameJustStarted;
+	public bool Is30score = false;
 
-	public GameObject obstacles_Obj;
+    public GameObject obstacles_Obj;
 	public GameObject[] obstacle_List;
 
 	[HideInInspector]
@@ -93,6 +94,7 @@ public class GameplayController : MonoBehaviour {
 		score_Count = (int)round; // save the score when the player dies
 		score_Text.text = round.ToString ();
         if (round >= 30.0f && round < 60.0f) {
+			Is30score = true;
 			moveSpeed = 14f;
 
 		} else if (round >= 60)
@@ -151,7 +153,13 @@ public class GameplayController : MonoBehaviour {
 		star_Score_Text.text = star_Score_Count.ToString ();
 	}
 
-	public void PauseGame() {
+    public void UpdateStarScoreDouble()
+    {
+        star_Score_Count+=2;
+        star_Score_Text.text = star_Score_Count.ToString();
+    }
+
+    public void PauseGame() {
 		Time.timeScale = 0f;
 		pause_Panel.SetActive (true);
 		pause_Anim.Play ("SlideIn");

@@ -17,10 +17,11 @@ public class ObstacleHolder : MonoBehaviour {
 
 		transform.position += new Vector3 (-GameplayController.instance.moveSpeed * Time.deltaTime, 0f, 0f);
 
-		if (transform.localPosition.x <= limitAxisX) {
-			
-			GameplayController.instance.obstacles_Is_Active = false;
-			gameObject.SetActive(false);
+		if (transform.localPosition.x <= limitAxisX)
+        { // if the object is out of the screen
+
+            GameplayController.instance.obstacles_Is_Active = false; // obstacles are not active
+            gameObject.SetActive(false);
 
 		}
 

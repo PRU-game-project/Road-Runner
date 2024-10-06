@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerController : MonoBehaviour {
 
@@ -8,11 +9,12 @@ public class PlayerController : MonoBehaviour {
 
 	private Animator anim;
 
-	private string jump_Animation = "PlayerJump", change_Line_Animation = "ChangeLine";
+	private string jump_Animation = "PlayerJump", change_Line_Animation = "ChangeLine", dash_Animation = "Dash";
 
 	public GameObject
 		player,
-		shadow;
+		shadow,
+		supporter;
 
 	public Vector3 
 		first_PosOfPlayer,
@@ -24,14 +26,21 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector]
 	public bool player_Jumped;
 
-	public GameObject explosion;
+    [HideInInspector]
+    public bool player_Dashed;
+
+    public GameObject explosion;
 
 	private SpriteRenderer player_Renderer;
 	public Sprite TRex_Sprite, player_Sprite;
 
 	private bool TRex_Trigger;
+    private bool Supporter_Trigger;
 
-	private GameObject[] start_Effect;
+	private float lastSummonedScore = 0f;
+
+
+    private GameObject[] start_Effect;
 
 	void Awake() {
 		MakeInstance ();
@@ -52,7 +61,9 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		HandleChangeLine ();
 		HandleJump ();
-	}
+		HandleDash();
+		SummonSupporter();
+    }
 
 	void MakeInstance() {
 		if (instance == null) {
@@ -93,7 +104,41 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void Die() {
+    void HandleDash()
+    {
+		if (GameplayController.instance.Is30score)
+		{
+            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+            {
+                if (!player_Dashed)
+                {
+
+                    anim.Play(dash_Animation);
+                    player_Dashed = true;
+                    SoundManager.instance.PlayMoveLineSound();
+                }
+            }
+        }
+    }
+
+	void SummonSupporter()
+	{
+        float round = Mathf.Floor(GameplayController.instance.distance_Move);
+
+		if (round % 30 == 0 && round != Mathf.Floor(lastSummonedScore) && round > 0)
+		{
+            lastSummonedScore = round;
+            if (!Supporter_Trigger)
+            {
+                Supporter_Trigger = true;
+                StartCoroutine(SupporterDuration());
+            }
+        }
+		
+       
+
+    }
+    void Die() {
 		player_Died = true;
 		player.SetActive (false);
 		shadow.SetActive (false);
@@ -118,20 +163,38 @@ public class PlayerController : MonoBehaviour {
 
 	IEnumerator TRexDuration() {
         SoundManager.instance.PlayPowerUpSound();
-		
 
         yield return new WaitForSeconds (7f); // wait for 7 seconds
                                               // after 7 seconds, the TRex power up will be over
         if (TRex_Trigger) {
 			TRex_Trigger = false;
-
-			player_Renderer.sprite = player_Sprite;
-
+            player_Renderer.sprite = player_Sprite;
         }
 
     }
 
-	void DestroyObstacle(Collider2D target) {
+    IEnumerator SupporterDuration()
+    {
+
+        SoundManager.instance.PlaySummonSound(); // anime sound
+        GameObject newSupporter = Instantiate(supporter, new Vector3(0f,0f, 0f), Quaternion.identity);
+
+        //set player is parent of supporter
+        newSupporter.transform.SetParent(player.transform);
+        newSupporter.transform.localPosition = new Vector3(1.43f, 1.03f, 0f);
+
+        yield return new WaitForSeconds(10f); // wait for 10 seconds
+                                             // after 7 seconds, the TRex power up will be over
+        if (Supporter_Trigger)
+        {
+            Supporter_Trigger = false;
+            Destroy(newSupporter);
+            SoundManager.instance.PlaySummonSound();
+        }
+
+    }
+
+    void DestroyObstacle(Collider2D target) {
 		explosion.transform.position = target.transform.position;
 		explosion.SetActive (false); // turn off the explosion if its already turned on
 		explosion.SetActive (true);
@@ -177,7 +240,15 @@ public class PlayerController : MonoBehaviour {
 
 			target.gameObject.SetActive (false);
 			SoundManager.instance.PlayCoinSound ();
-			GameplayController.instance.UpdateStarScore ();
+            if (Supporter_Trigger)
+            {
+                GameplayController.instance.UpdateStarScoreDouble();
+            }
+            else
+            {
+                GameplayController.instance.UpdateStarScore();
+            }
+           
 		}
 
 	}

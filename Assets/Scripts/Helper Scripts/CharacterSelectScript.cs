@@ -35,7 +35,9 @@ public class CharacterSelectScript : MonoBehaviour {
 	}
 
 	public void NextHero() {
-		available_Heroes [currentIndex].SetActive (false);
+        heroes = GameManager.instance.heroes;
+
+        available_Heroes[currentIndex].SetActive (false);
 
 		if (currentIndex + 1 == available_Heroes.Length) {
 			currentIndex = 0;
@@ -51,7 +53,9 @@ public class CharacterSelectScript : MonoBehaviour {
 	}
 
 	public void PreviousHero() {
-		available_Heroes [currentIndex].SetActive (false);
+        heroes = GameManager.instance.heroes;
+
+        available_Heroes[currentIndex].SetActive (false);
 
 		if (currentIndex - 1 == -1) {
 			currentIndex = available_Heroes.Length - 1;
@@ -67,8 +71,8 @@ public class CharacterSelectScript : MonoBehaviour {
 	}
 
 	void CheckIfCharacterIsUnlocked() {
-        heroes = GameManager.instance.heroes;
-        if (heroes [currentIndex]) {
+
+		if (heroes [currentIndex]) {
 			// if the hero is unlocked
 
 			starIcon.SetActive (false);
@@ -90,7 +94,8 @@ public class CharacterSelectScript : MonoBehaviour {
 	}
 
 	public void SelectHero() {
-		if (!heroes [currentIndex]) {
+        heroes = GameManager.instance.heroes;
+        if (!heroes [currentIndex]) {
 			// IF THE HERO IS NOT UNLOCKED - MEANING HE IS LOCKED
 
 			if (currentIndex != GameManager.instance.selected_Index) {

@@ -19,7 +19,13 @@ public class AnimationEvents : MonoBehaviour {
 			PlayerController.instance.player_Jumped = false;
 
 		}
-	}
+
+        if (PlayerController.instance.player_Dashed)
+        {
+            PlayerController.instance.player_Dashed = false;
+
+        }
+    }
 
 	void AnimationEnded() {
 		gameObject.SetActive (false);

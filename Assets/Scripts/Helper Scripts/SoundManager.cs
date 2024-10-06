@@ -16,6 +16,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClip
 		die_Clip,
 		coin_Clip,
+		summon_Clip,
 		game_Over_Clip;
 
 	void Awake () {
@@ -51,7 +52,13 @@ public class SoundManager : MonoBehaviour {
         clip_AudioSource.Play ();
 	}
 
-	public void PlayPowerUpSound() {
+    public void PlaySummonSound()
+    {
+        clip_AudioSource.clip = summon_Clip;
+        clip_AudioSource.Play();
+    }
+
+    public void PlayPowerUpSound() {
         powerUp_Adudio_Source.Play ();
 	}
 
