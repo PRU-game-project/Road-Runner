@@ -108,6 +108,7 @@ public class PlayerController : MonoBehaviour {
     {
 		if (GameplayController.instance.Is30score)
 		{
+           
             if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
             {
                 if (!player_Dashed)
@@ -189,7 +190,7 @@ public class PlayerController : MonoBehaviour {
         {
             Supporter_Trigger = false;
             Destroy(newSupporter);
-            SoundManager.instance.PlaySummonSound();
+            SoundManager.instance.PlaySkillAppearSound();
         }
 
     }

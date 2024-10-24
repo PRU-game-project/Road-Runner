@@ -23,6 +23,7 @@ public class GameplayController : MonoBehaviour {
 
 	private Text score_Text;
 	private Text star_Score_Text;
+	public GameObject skill_Icon_Image;
 
 	private int star_Score_Count, score_Count;
 
@@ -39,7 +40,9 @@ public class GameplayController : MonoBehaviour {
 
 		score_Text = GameObject.Find ("ScoreText").GetComponent<Text> ();
 		star_Score_Text = GameObject.Find ("StarText").GetComponent<Text> ();
-	}
+        GameObject skillIconObj = GameObject.Find("IconSkill");
+      
+    }
 
 	void Start() {
 		gameJustStarted = true;
@@ -95,12 +98,14 @@ public class GameplayController : MonoBehaviour {
 		score_Text.text = round.ToString ();
         if (round >= 30.0f && round < 60.0f) {
 			Is30score = true;
-			moveSpeed = 14f;
+            EnableSkillIcon();
+            //play sound yasuo
+            moveSpeed = 14f;
 
 		} else if (round >= 60)
         { // every 60 points increase the speed by 2
             moveSpeed += 1f * Time.deltaTime;
-			Debug.Log("Move Speed: " + moveSpeed);
+			//Debug.Log("Move Speed: " + moveSpeed);
         }
     }
 
@@ -147,8 +152,12 @@ public class GameplayController : MonoBehaviour {
 			yield return new WaitForSeconds (0.6f);
 		}
 	}
+	public void EnableSkillIcon()
+	{
+        skill_Icon_Image.SetActive(true);
+    }
 
-	public void UpdateStarScore() {
+    public void UpdateStarScore() {
 		star_Score_Count++;
 		star_Score_Text.text = star_Score_Count.ToString ();
 	}

@@ -11,12 +11,14 @@ public class SoundManager : MonoBehaviour {
 		jump_Audio_Source,
 		clip_AudioSource, 
         background_Audio_Source,
-		powerUp_Adudio_Source; // default: powerUp sound
+		powerUp_Adudio_Source,
+		Skill_Appear_Audio_Source; // default: powerUp sound
 
     public AudioClip
 		die_Clip,
 		coin_Clip,
 		summon_Clip,
+		skill_Clip,
 		game_Over_Clip;
 
 	void Awake () {
@@ -52,6 +54,10 @@ public class SoundManager : MonoBehaviour {
         clip_AudioSource.Play ();
 	}
 
+	public void PlaySkillAppearSound()
+	{
+        Skill_Appear_Audio_Source.Play();
+	}
     public void PlaySummonSound()
     {
         clip_AudioSource.clip = summon_Clip;
