@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-//[Serializable]
+[Serializable]
 public class GameData
 {
     public string name_User { get; set; }
@@ -22,6 +22,55 @@ public class GameData
         this.score_Count = score_Count;
         this.heroes = heroes;
         this.selected_Index = selected_Index;
+    }
+
+    public GameData() { }
+    public int StarScore
+    {
+        get
+        {
+            return star_Score;
+        }
+        set
+        {
+            star_Score = value;
+        }
+    }
+
+    public int ScoreCount
+    {
+        get
+        {
+            return score_Count;
+        }
+        set
+        {
+            score_Count = value;
+        }
+    }
+
+    public bool[] Heroes
+    {
+        get
+        {
+            return heroes;
+        }
+        set
+        {
+            heroes = value;
+        }
+    }
+
+    public int SelectedIndex
+    {
+        get
+        {
+            return selected_Index;
+        }
+        set
+        {
+            selected_Index = value;
+        }
     }
 }
 

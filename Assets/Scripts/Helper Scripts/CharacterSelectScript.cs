@@ -118,7 +118,7 @@ public class CharacterSelectScript : MonoBehaviour {
 					GameManager.instance.selected_Index = currentIndex;
 					GameManager.instance.heroes = heroes;
 
-					GameManager.instance.SaveGameData ();
+                    GameManager.instance.SaveGameData ();
 
 				} else {
 					print ("NOT ENOUGH STAR POINTS TO UNLOCK THE PLAYER");
@@ -131,7 +131,7 @@ public class CharacterSelectScript : MonoBehaviour {
 			selectedText.text = "Selected";
 			GameManager.instance.selected_Index = currentIndex;
 
-			GameManager.instance.SaveGameData ();
+            GameManager.instance.SaveGameData ();
 		}
 	}
 
