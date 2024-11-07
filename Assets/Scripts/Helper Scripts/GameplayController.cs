@@ -12,6 +12,7 @@ public class GameplayController : MonoBehaviour {
 	public float distance_Move;
 	private bool gameJustStarted;
 	public bool Is30score = false;
+	public bool Is60score = false;
 
     public GameObject obstacles_Obj;
 	public GameObject[] obstacle_List;
@@ -104,6 +105,7 @@ public class GameplayController : MonoBehaviour {
 
 		} else if (round >= 60)
         { // every 60 points increase the speed by 2
+            Is60score = true;
             moveSpeed += 1f * Time.deltaTime;
 			//Debug.Log("Move Speed: " + moveSpeed);
         }

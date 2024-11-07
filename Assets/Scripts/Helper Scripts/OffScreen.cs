@@ -25,26 +25,48 @@ public class OffScreen : MonoBehaviour {
 	void CheckTile () {
 	
 		if (this.tag == MyTags.ROAD) {
-			
-			Change (ref MapGenerator.instance.last_Pos_Of_Road_Tile,
+			//if is score 60 or more
+			if (GameplayController.instance.Is60score) {
+                string path = "Sprites/Platform/" + "Water1";
+                var platform_Sprite = Resources.Load<Sprite>(path);
+                sprite_Renderer.sprite = platform_Sprite;
+            }
+           
+
+            Change (ref MapGenerator.instance.last_Pos_Of_Road_Tile,
 				new Vector3(1.5f, 0f, 0f),
 				ref MapGenerator.instance.last_Order_Of_Road);
 			
 		} else if (this.tag == MyTags.TOP_NEAR_GRASS) {
-			
-			Change (ref MapGenerator.instance.last_Pos_Of_Top_Near_Grass,
+            if (GameplayController.instance.Is60score)
+            {
+                string path = "Sprites/Platform/" + "Water2";
+                var platform_Sprite = Resources.Load<Sprite>(path);
+                sprite_Renderer.sprite = platform_Sprite;
+            }
+            Change (ref MapGenerator.instance.last_Pos_Of_Top_Near_Grass,
 				new Vector3(1.2f, 0f, 0f),
 				ref MapGenerator.instance.last_Order_Of_Top_Near_Grass);
 
 		} else if (this.tag == MyTags.TOP_FAR_GRASS) {
-
-			Change (ref MapGenerator.instance.last_Pos_Of_Top_Far_Grass,
+            if (GameplayController.instance.Is60score)
+            {
+                string path = "Sprites/Platform/" + "land";
+                var platform_Sprite = Resources.Load<Sprite>(path);
+                sprite_Renderer.sprite = platform_Sprite;
+            }
+            Change (ref MapGenerator.instance.last_Pos_Of_Top_Far_Grass,
 				new Vector3(4.8f, 0f, 0f),
 				ref MapGenerator.instance.last_Order_Of_Top_Far_Grass);
 
 		} else if (this.tag == MyTags.BOTTOM_NEAR_GRASS) {
-
-			Change (ref MapGenerator.instance.last_Pos_Of_Bottom_Near_Grass,
+            if (GameplayController.instance.Is60score)
+            {
+                string path = "Sprites/Platform/" + "Water3";
+                var platform_Sprite = Resources.Load<Sprite>(path);
+                sprite_Renderer.sprite = platform_Sprite;
+            }
+            Change (ref MapGenerator.instance.last_Pos_Of_Bottom_Near_Grass,
 				new Vector3(1.2f, 0f, 0f),
 				ref MapGenerator.instance.last_Order_Of_Bottom_Near_Grass);
 

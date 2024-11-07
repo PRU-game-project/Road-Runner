@@ -188,6 +188,23 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log("jsonData: is null");
+            if (gameData == null)
+            {
+                // First time running the game (New player)
+                starScore = 0;
+                score_Count = 0;
+                selected_Index = 0;
+                heroes = new bool[9];
+                heroes[0] = true;
+
+                for (int i = 1; i < heroes.Length; i++)
+                {
+                    heroes[i] = false;
+                }
+
+                gameData = new GameData(userName_Input, starScore, score_Count, heroes, selected_Index);
+                SaveGameData();
+            }
         }
 
         // Handle convert json string to object
