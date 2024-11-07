@@ -21,52 +21,52 @@ public class OffScreen : MonoBehaviour {
 		}
 
 	}
+	void ChangeSpriteMap(string nameTile)
+	{
+        if (GameplayController.instance.Is60score && !GameplayController.instance.IsSecretRound)
+        {
+            string path = "Sprites/Platform/" + nameTile;
+            var platform_Sprite = Resources.Load<Sprite>(path);
+            sprite_Renderer.sprite = platform_Sprite;
+        }
+        else if (GameplayController.instance.IsSecretRound)
+        {
+			Debug.Log("Secret Round");
+            string path = "Sprites/Platform/" + "ground3";
+            var platform_Sprite = Resources.Load<Sprite>(path);
+            sprite_Renderer.sprite = platform_Sprite;
+		}
+		
 
+    }
 	void CheckTile () {
-	
-		if (this.tag == MyTags.ROAD) {
+        if (this.tag == MyTags.ROAD) {
 			//if is score 60 or more
-			if (GameplayController.instance.Is60score) {
-                string path = "Sprites/Platform/" + "Water1";
-                var platform_Sprite = Resources.Load<Sprite>(path);
-                sprite_Renderer.sprite = platform_Sprite;
-            }
-           
+			
+			ChangeSpriteMap("Water1");
 
             Change (ref MapGenerator.instance.last_Pos_Of_Road_Tile,
 				new Vector3(1.5f, 0f, 0f),
 				ref MapGenerator.instance.last_Order_Of_Road);
 			
 		} else if (this.tag == MyTags.TOP_NEAR_GRASS) {
-            if (GameplayController.instance.Is60score)
-            {
-                string path = "Sprites/Platform/" + "Water2";
-                var platform_Sprite = Resources.Load<Sprite>(path);
-                sprite_Renderer.sprite = platform_Sprite;
-            }
-            Change (ref MapGenerator.instance.last_Pos_Of_Top_Near_Grass,
+            ChangeSpriteMap("Water2");
+
+            Change(ref MapGenerator.instance.last_Pos_Of_Top_Near_Grass,
 				new Vector3(1.2f, 0f, 0f),
 				ref MapGenerator.instance.last_Order_Of_Top_Near_Grass);
 
 		} else if (this.tag == MyTags.TOP_FAR_GRASS) {
-            if (GameplayController.instance.Is60score)
-            {
-                string path = "Sprites/Platform/" + "land";
-                var platform_Sprite = Resources.Load<Sprite>(path);
-                sprite_Renderer.sprite = platform_Sprite;
-            }
-            Change (ref MapGenerator.instance.last_Pos_Of_Top_Far_Grass,
+            ChangeSpriteMap("land");
+
+            Change(ref MapGenerator.instance.last_Pos_Of_Top_Far_Grass,
 				new Vector3(4.8f, 0f, 0f),
 				ref MapGenerator.instance.last_Order_Of_Top_Far_Grass);
 
 		} else if (this.tag == MyTags.BOTTOM_NEAR_GRASS) {
-            if (GameplayController.instance.Is60score)
-            {
-                string path = "Sprites/Platform/" + "Water3";
-                var platform_Sprite = Resources.Load<Sprite>(path);
-                sprite_Renderer.sprite = platform_Sprite;
-            }
-            Change (ref MapGenerator.instance.last_Pos_Of_Bottom_Near_Grass,
+            ChangeSpriteMap("Water3");
+
+            Change(ref MapGenerator.instance.last_Pos_Of_Bottom_Near_Grass,
 				new Vector3(1.2f, 0f, 0f),
 				ref MapGenerator.instance.last_Order_Of_Bottom_Near_Grass);
 

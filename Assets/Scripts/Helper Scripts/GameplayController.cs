@@ -4,265 +4,266 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameplayController : MonoBehaviour {
+public class GameplayController : MonoBehaviour
+{
 
-	public static GameplayController instance;
+    public static GameplayController instance;
 
-	public float moveSpeed, distance_Factor = 1f;
-	public float distance_Move;
-	private bool gameJustStarted;
-	public bool Is30score = false;
-	public bool Is60score = false;
+    public float moveSpeed, distance_Factor = 1f;
+    public float distance_Move;
+    private bool gameJustStarted;
+    public bool Is30score = false;
+    public bool Is60score = false;
+    public bool IsSecretRound = false;
+    public bool IsLucky = false;
 
     public GameObject obstacles_Obj;
-	public GameObject[] obstacle_List;
+    public GameObject[] obstacle_List;
 
-	[HideInInspector]
-	public bool obstacles_Is_Active;
+    [HideInInspector]
+    public bool obstacles_Is_Active;
 
-	private string Coroutine_Method_Name = "SpawnObstacles";
+    private string Coroutine_Method_Name = "SpawnObstacles";
 
-	private Text score_Text;
-	private Text star_Score_Text;
-	public GameObject skill_Icon_Image;
+    private Text score_Text;
+    private Text star_Score_Text;
+    public GameObject skill_Icon_Image;
 
-	private int star_Score_Count, score_Count;
+    private int star_Score_Count, score_Count;
 
-	public GameObject pause_Panel;
-	public Animator pause_Anim;
+    public GameObject pause_Panel;
+    public Animator pause_Anim;
 
-	public GameObject gameOver_Panel;
-	public Animator gameOver_Anim;
+    public GameObject gameOver_Panel;
+    public Animator gameOver_Anim;
 
-	public Text final_Score_Text, best_Score_Text, final_Star_Score_Text;
+    public Text final_Score_Text, best_Score_Text, final_Star_Score_Text;
 
-	void Awake () {
-		MakeInstance ();
+    void Awake()
+    {
+        MakeInstance();
 
-		score_Text = GameObject.Find ("ScoreText").GetComponent<Text> ();
-		star_Score_Text = GameObject.Find ("StarText").GetComponent<Text> ();
+        score_Text = GameObject.Find("ScoreText").GetComponent<Text>();
+        star_Score_Text = GameObject.Find("StarText").GetComponent<Text>();
         GameObject skillIconObj = GameObject.Find("IconSkill");
-      
-    }
-
-	void Start() {
-		gameJustStarted = true;
-
-		GetObstacles ();
-		StartCoroutine (Coroutine_Method_Name); // this function will be called every 0.6 seconds
 
     }
 
-	void Update () {
-		MoveCamera ();
-	}
+    void Start()
+    {
+        gameJustStarted = true;
+        //IsSecretRound = true;
+        GetObstacles();
+        StartCoroutine(Coroutine_Method_Name); // this function will be called every 0.6 seconds
 
-	void MakeInstance() {
-		if (instance == null) {
-			instance = this;
+    }
 
-		} else if (instance != null) {
-			Destroy (gameObject);
-		}
-	}
+    void Update()
+    {
+        MoveCamera();
+    }
 
-	void MoveCamera() {
+    void MakeInstance()
+    {
+        if (instance == null)
+        {
+            instance = this;
 
-		if (gameJustStarted) {
+        }
+        else if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+    }
 
-			if (!PlayerController.instance.player_Died) {
-				// check if player is alive
-				if (moveSpeed < 12.0f) {
-					moveSpeed += Time.deltaTime * 5.0f;
+    void MoveCamera()
+    {
 
-				} else {
-					moveSpeed = 12f;
-					gameJustStarted = false;
-				}
-			}
-		}
+        if (gameJustStarted)
+        {
 
-		// check if player is alive
-		if(!PlayerController.instance.player_Died) {
-			Camera.main.transform.position += new Vector3(moveSpeed * Time.deltaTime, 0f, 0f);
-			UpdateDistance ();
-		}
+            if (!PlayerController.instance.player_Died)
+            {
+                // check if player is alive
+                if (moveSpeed < 12.0f)
+                {
+                    moveSpeed += Time.deltaTime * 5.0f;
 
-	}
+                }
+                else
+                {
+                    moveSpeed = 12f;
+                    gameJustStarted = false;
+                }
+            }
+        }
 
-	void UpdateDistance() {
-		distance_Move += Time.deltaTime * distance_Factor;
-		float round = Mathf.Round (distance_Move);
+        // check if player is alive
+        if (!PlayerController.instance.player_Died)
+        {
+            Camera.main.transform.position += new Vector3(moveSpeed * Time.deltaTime, 0f, 0f);
+            UpdateDistance();
+        }
 
-		// COUNT AND SHOW THE SCORE
-		score_Count = (int)round; // save the score when the player dies
-		score_Text.text = round.ToString ();
-        if (round >= 30.0f && round < 60.0f) {
-			Is30score = true;
+    }
+
+    void UpdateDistance()
+    {
+        distance_Move += Time.deltaTime * distance_Factor;
+        float round = Mathf.Round(distance_Move);
+
+        // COUNT AND SHOW THE SCORE
+        score_Count = (int)round; // save the score when the player dies
+        score_Text.text = round.ToString();
+        if (round >= 30.0f && round < 60.0f)
+        {
+            Is30score = true;
             EnableSkillIcon();
             //play sound yasuo
             moveSpeed = 14f;
 
-		} else if (round >= 60)
+        }
+        else if (round >= 60)
         { // every 60 points increase the speed by 2
             Is60score = true;
             moveSpeed += 1f * Time.deltaTime;
-			//Debug.Log("Move Speed: " + moveSpeed);
+            //Debug.Log("Move Speed: " + moveSpeed);
         }
     }
 
-	void GetObstacles() {
-		obstacle_List = new GameObject[obstacles_Obj.transform.childCount];
+    void GetObstacles()
+    {
+        obstacle_List = new GameObject[obstacles_Obj.transform.childCount];
 
-		for (int i = 0; i < obstacle_List.Length; i++) {
-			obstacle_List [i] = 
-				obstacles_Obj.GetComponentsInChildren<ObstacleHolder> (true) [i].gameObject;
-		}
-	}
+        for (int i = 0; i < obstacle_List.Length; i++)
+        {
+            obstacle_List[i] =
+                obstacles_Obj.GetComponentsInChildren<ObstacleHolder>(true)[i].gameObject;
+        }
+    }
 
     // this coroutine function will be called every 0.6 seconds by Start()
-    IEnumerator SpawnObstacles() {
+    IEnumerator SpawnObstacles()
+    {
 
-		while (true) {
+        while (true)
+        {
 
-			if (!PlayerController.instance.player_Died) {
+            if (!PlayerController.instance.player_Died)
+            {
 
-				if (!obstacles_Is_Active) {
+                if (!obstacles_Is_Active)
+                {
 
-					if (Random.value <= 0.85f)
+                    if (Random.value <= 0.85 && !IsLucky)
                     { // 85% chance of spawning an obstacle
 
                         int randomIndex = 0;
 
-						do {
+                        do
+                        {
 
                             // get a random index
                             randomIndex = Random.Range(0, obstacle_List.Length);
 
-						} while(obstacle_List[randomIndex].activeInHierarchy); // stop random when the obstacle is not active
+                        } while (obstacle_List[randomIndex].activeInHierarchy); // stop random when the obstacle is not active
 
                         // set the obstacle to active
-                        obstacle_List[randomIndex].SetActive (true);
-						obstacles_Is_Active = true;
+                        obstacle_List[randomIndex].SetActive(true);
+                        obstacles_Is_Active = true;
 
-					}
+                    }
 
-				}
+                    //event lucky
+                    if (IsLucky)
+                    {
+                        obstacle_List[17].SetActive(true);
+                        obstacles_Is_Active = true;
+                    }
 
-			}
+                }
 
-			yield return new WaitForSeconds (0.6f);
-		}
-	}
-	public void EnableSkillIcon()
-	{
+            }
+
+            yield return new WaitForSeconds(0.6f);
+        }
+    }
+    public void EnableSkillIcon()
+    {
         skill_Icon_Image.SetActive(true);
     }
 
-    public void UpdateStarScore() {
-		star_Score_Count++;
-		star_Score_Text.text = star_Score_Count.ToString ();
-	}
-
-    public void UpdateStarScoreDouble()
+    public void UpdateStarScore()
     {
-        star_Score_Count+=2;
+        star_Score_Count++;
         star_Score_Text.text = star_Score_Count.ToString();
     }
 
-    public void PauseGame() {
-		Time.timeScale = 0f;
-		pause_Panel.SetActive (true);
-		pause_Anim.Play ("SlideIn");
-	}
+    public void UpdateStarScoreFactor(int factor)
+    {
+        star_Score_Count += factor;
+        star_Score_Text.text = star_Score_Count.ToString();
+    }
 
-	public void ResumeGame() {
-		pause_Anim.Play ("SlideOut");
-	}
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+        pause_Panel.SetActive(true);
+        pause_Anim.Play("SlideIn");
+    }
 
-	public void RestartGame() {
-		Time.timeScale = 1f;
-		SceneManager.LoadScene ("Gameplay");
-	}
+    public void ResumeGame()
+    {
+        pause_Anim.Play("SlideOut");
+    }
 
-	public void HomeButton() {
-		Time.timeScale = 1f;
-		SceneManager.LoadScene ("MainMenu");
-	}
+    public void RestartGame()
+    {
+        //if player dies, score is 100, then restart the game will make score x5
+        if (IsSecretRound)
+        {
+            IsSecretRound = false;
+        }
+        if (PlayerController.instance.player_Died && (score_Count % 100) == 0)
+        {
+            IsSecretRound = true;
+        }
 
-	public void GameOver() {
-		Time.timeScale = 0f;
-		gameOver_Panel.SetActive (true);
-		gameOver_Anim.Play ("SlideIn");
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Gameplay");
+    }
 
-		final_Score_Text.text = score_Count.ToString ();
-		final_Star_Score_Text.text = star_Score_Count.ToString ();
+    public void HomeButton()
+    {
+        Time.timeScale = 1f;
+        if (IsSecretRound)
+        {
+            IsSecretRound = false;
+        }
+        SceneManager.LoadScene("MainMenu");
+    }
 
-		if (GameManager.instance.score_Count < score_Count) {
-			GameManager.instance.score_Count = score_Count;
-		}
+    public void GameOver()
+    {
+        Time.timeScale = 0f;
+        gameOver_Panel.SetActive(true);
+        gameOver_Anim.Play("SlideIn");
 
-		best_Score_Text.text = GameManager.instance.score_Count.ToString ();
+        final_Score_Text.text = score_Count.ToString();
+        final_Star_Score_Text.text = star_Score_Count.ToString();
 
-		GameManager.instance.starScore += star_Score_Count;
+        if (GameManager.instance.score_Count < score_Count)
+        {
+            GameManager.instance.score_Count = score_Count;
+        }
 
-		GameManager.instance.SaveGameData();
+        best_Score_Text.text = GameManager.instance.score_Count.ToString();
 
-	}
+        GameManager.instance.starScore += star_Score_Count;
+
+        GameManager.instance.SaveGameData();
+
+    }
 
 } // class
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

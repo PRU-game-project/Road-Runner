@@ -243,11 +243,16 @@ public class PlayerController : MonoBehaviour {
 			SoundManager.instance.PlayCoinSound ();
             if (Supporter_Trigger)
             {
-                GameplayController.instance.UpdateStarScoreDouble();
+                GameplayController.instance.UpdateStarScoreFactor(2);
             }
             else
             {
-                GameplayController.instance.UpdateStarScore();
+                if (GameplayController.instance.IsSecretRound)
+				{
+                    GameplayController.instance.UpdateStarScoreFactor(5);
+                }
+                else
+                    GameplayController.instance.UpdateStarScore();
             }
            
 		}
