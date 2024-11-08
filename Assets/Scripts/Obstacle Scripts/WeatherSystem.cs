@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class WeatherSystem : MonoBehaviour
 {
     public ParticleSystem rainEffect;
     public ParticleSystem stormEffect;
-    //private Light sunLight;
+    private Light2D _light;
     public float weatherChangeInterval = 10f;
     private float timer;
 
@@ -25,10 +26,7 @@ public class WeatherSystem : MonoBehaviour
     void Start()
     {
         bgspriteRenderer = backGround.GetComponent<SpriteRenderer>();
-        //// Tạo Light
-        //sunLight = new GameObject("SunLight").AddComponent<Light>();
-        //sunLight.type = LightType.Directional;
-        //sunLight.intensity = 1f;
+        _light = GetComponent<Light2D>();
         ChangeWeather();
     }
 
@@ -41,9 +39,7 @@ public class WeatherSystem : MonoBehaviour
             {
                 ChangeWeather();
                 timer = 0;
-                
             }
-
         }
         else
         {
@@ -81,7 +77,7 @@ public class WeatherSystem : MonoBehaviour
             case WeatherType.Sunny:
                 Debug.Log("Sunny");
                 previousWeather = WeatherType.Sunny;
-                //sunLight.intensity = 1f;
+                _light.intensity = 1f;
                 rainEffect.Stop();
                 stormEffect.Stop();
                 RenderSettings.fog = false; // fog mean sương mù
@@ -91,8 +87,8 @@ public class WeatherSystem : MonoBehaviour
             case WeatherType.Rain:
                 Debug.Log("Rain");
                 previousWeather = WeatherType.Rain;
-                StartCoroutine(DarkenOverTime(3f,0.5f));
-                //sunLight.intensity = 0.3f;
+                StartCoroutine(DarkenOverTime(3f, 0.5f));
+                _light.intensity = 0.3f;
                 rainEffect.Play();
                 stormEffect.Stop();
                 RenderSettings.fog = true;
@@ -101,8 +97,8 @@ public class WeatherSystem : MonoBehaviour
             case WeatherType.Storm:
                 Debug.Log("Storm");
                 previousWeather = WeatherType.Storm;
-                StartCoroutine(DarkenOverTime(7f,0.7f));
-                //sunLight.intensity = 0.1f;
+                StartCoroutine(DarkenOverTime(7f, 0.7f));
+                _light.intensity = 0.1f;
                 rainEffect.Play();
                 stormEffect.Play();
                 RenderSettings.fog = true;
@@ -112,7 +108,7 @@ public class WeatherSystem : MonoBehaviour
         }
     }
 
-   
+
     IEnumerator DarkenOverTime(float duration, float darkFactor)
     {
         Color initialColor = bgspriteRenderer.color;  // Save the initial color of the sprite

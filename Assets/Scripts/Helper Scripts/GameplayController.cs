@@ -224,6 +224,8 @@ public class GameplayController : MonoBehaviour
         {
             IsSecretRound = false;
         }
+
+
         if (PlayerController.instance.player_Died && (score_Count % 100) == 0)
         {
             IsSecretRound = true;

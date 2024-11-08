@@ -8,7 +8,8 @@ public class WorldLight : MonoBehaviour
 {
     public float duration = 5f;
     
-    [SerializeField] private Gradient gradient;
+    [SerializeField]
+    private Gradient gradient;
     private Light2D _light;
     private float _startTime;
     // Start is called before the first frame update
@@ -27,6 +28,6 @@ public class WorldLight : MonoBehaviour
         float percentage = Mathf.Sin( timeElapsed / duration * Mathf.PI * 2) * 0.5f + 0.5f;
         // Clamp the percentage to be between & and 1
         percentage = Mathf.Clamp01(percentage);
-        _light.color = gradient. Evaluate(percentage);
+        _light.color = gradient.Evaluate(percentage);
     }
 }
